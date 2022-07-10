@@ -47,11 +47,11 @@
 
   - name: Build Tomcat container
     docker_compose:
-      project_name: tomcat
+      project_name: tomcat_webapp
       definition:
         version: '2'
         services:
-          maven:
+          tomcat:
             build: "/tmp/boxfuse/target/"
             ports: 
             - "8080:8080"
