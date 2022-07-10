@@ -23,7 +23,7 @@ resource "aws_instance" "build_server" {
   key_name               = local.key_name
   vpc_security_group_ids = [aws_security_group.open_ports_22_8080.id]
   user_data = file("build_userdata.sh")
-  iam_instance_profile   = "aws-ec2-container_registry-access"
+  iam_instance_profile   = "aws-ec2-container_registry-access" # instance role with access to ECR
 
   tags = {
     Name = "Build Server"
@@ -37,7 +37,7 @@ resource "aws_instance" "prod_server" {
   key_name               = local.key_name
   vpc_security_group_ids = [aws_security_group.open_ports_22_8080.id]
   user_data = file("prod_userdata.sh")
-  iam_instance_profile   = "aws-ec2-container_registry-access"
+  iam_instance_profile   = "aws-ec2-container_registry-access" # instance role with access to ECR
 
   tags = {
     Name = "Prod Server"

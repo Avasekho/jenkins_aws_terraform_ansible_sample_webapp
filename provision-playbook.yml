@@ -1,9 +1,14 @@
 ---
 # ensure docker module is present
-- name: Install Docker Module for Python
+- name: Ensure Docker Module for Python is present
   hosts: localhost
-  become: true
-  pip: name=docker
+  become: yes
+  tasks:
+  - name: install pip
+    pip:
+      state: present
+      name: docker
+      executable: /usr/bin/pip3
 
 # build server setup
 - name: install maven
