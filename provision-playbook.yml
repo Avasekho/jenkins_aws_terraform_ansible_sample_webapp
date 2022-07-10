@@ -1,0 +1,72 @@
+---
+# ensure docker module is present
+- name: Install Docker Module for Python
+  hosts: localhost
+  become: true
+  pip: name=docker
+
+# build server setup
+- name: install maven
+  hosts: build
+  become: yes
+
+  tasks:
+  - name: Ensure default-jdk/maven/git packages are installed
+    apt:
+      update_cache: yes
+      pkg:
+      - default-jdk
+      - maven
+      - git
+      - awscli
+      - docker.io
+      - docker-compose
+      state: present
+
+# building war
+- name: build war
+  hosts: build
+
+  tasks:
+  - name: clone files from Git repository
+    git:
+      repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+      dest: /tmp/boxfuse
+
+  - name: package war
+    shell:
+      chdir: /tmp/boxfuse
+      cmd: mvn package
+
+# tasks build docker
+  - name: sync dockerfile
+    synchronize:
+      mode: push
+      src: './Dockerfile'
+      dest: '/tmp/boxfuse/target/Dockerfile'
+
+  - name: Build Tomcat container
+    docker_compose:
+      project_name: tomcat
+      definition:
+        version: '2'
+        services:
+          maven:
+            build: "/tmp/boxfuse/target/"
+            ports: 
+            - "8080:8080"
+
+# build server setup
+- name: install docker
+  hosts: prod
+  become: yes
+
+  tasks:
+  - name: Ensure docker packages are installed
+    apt:
+      update_cache: yes
+      pkg:
+      - awscli
+      - docker.io
+      - docker-compose
+      state: present
