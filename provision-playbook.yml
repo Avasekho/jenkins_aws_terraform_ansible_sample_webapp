@@ -38,23 +38,31 @@
       chdir: /tmp/boxfuse
       cmd: mvn package
 
-# tasks build docker
+# tasks build and push docker
   - name: sync dockerfile
     synchronize:
       mode: push
       src: './Dockerfile'
       dest: '/tmp/boxfuse/target/Dockerfile'
 
-  - name: Build Tomcat container
-    docker_compose:
-      project_name: tomcat_webapp
-      definition:
-        version: '2'
-        services:
-          tomcat:
-            build: "/tmp/boxfuse/target/"
-            ports: 
-            - "8080:8080"
+  - name: Retrieve AWS authentication token
+    shell: "aws ecr get-login-password --region us-east-1"
+    register: ECR_token_output_b
+
+  - name: Docker login
+    shell: {{ ECR_token_output_b.stdout }}
+
+  - name: Build and push Tomcat container
+    docker_image:
+      name: tomcat_webapp
+      build:
+        path: /tmp/boxfuse/target/
+        args:
+          listen_port: 8080
+      name: 373000727222.dkr.ecr.us-east-1.amazonaws.com/app_deployment
+      tag: v1
+      push: yes
+      source: build
 
 # build server setup
 - name: install docker
@@ -70,3 +78,32 @@
       - docker.io
       - docker-compose
       state: present
+
+# pull and start docker container
+- name: pull docker container
+  hosts: prod
+  become: yes
+
+  tasks:
+  - name: Retrieve AWS authentication token
+    shell: "aws ecr get-login-password --region us-east-1"
+    register: ECR_token_output_p
+
+  - name: Docker login
+    shell: {{ ECR_token_output_p.stdout }}
+
+#  - name: pull an image
+#    docker_image:
+#      name: 373000727222.dkr.ecr.us-east-1.amazonaws.com/app_deployment:v1
+#      source: pull
+
+  - name: install tomcat container
+    docker_compose:
+      project_name: webapp
+      definition:
+        version: '2'
+        services:
+          tomcat:
+            image: 373000727222.dkr.ecr.us-east-1.amazonaws.com/app_deployment:v1
+            ports: 
+              - "8080:8080"
