@@ -26,7 +26,7 @@ pipeline {
 
     stage ('Ansible provisioning') {
       steps {
-      sh 'ansible-playbook provision-playbook.yml'
+      ansiblePlaybook become: true, credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml'
     }    
     }
   }
