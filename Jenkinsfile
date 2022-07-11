@@ -2,7 +2,7 @@ pipeline {
   agent {
     label 'jenkins-agent'
   }
-  
+
   stages {
     stage ('Terraform init') {
       steps {
@@ -22,6 +22,13 @@ pipeline {
         sh 'terraform apply -auto-approve'
     } 
     }
+    }
+
+    stage ('Delay for Instances to finish') {
+      steps {
+                echo "Sleep 1 minute"
+                sleep(time: 60, unit: "SECONDS")
+            }
     }
 
     stage ('Ansible provisioning') {
