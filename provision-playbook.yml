@@ -14,7 +14,7 @@
       state: present
     register: apt_res_l
     retries: 5
-    until: apt_res_l is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+    until: apt_res_l is success or ('Failed to lock apt for exclusive operation' not in apt_res_l.msg and '/var/lib/dpkg/lock' not in apt_res_l.msg)
 
   - name: install docker pip
     pip:
@@ -41,7 +41,7 @@
       state: present
     register: apt_res_b
     retries: 5
-    until: apt_res_b is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+    until: apt_res_b is success or ('Failed to lock apt for exclusive operation' not in apt_res_b.msg and '/var/lib/dpkg/lock' not in apt_res_b.msg)
 
 # building war
 - name: build war
@@ -100,7 +100,7 @@
       state: present
     register: apt_res_p
     retries: 5
-    until: apt_res_p is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+    until: apt_res_p is success or ('Failed to lock apt for exclusive operation' not in apt_res_p.msg and '/var/lib/dpkg/lock' not in apt_res_p.msg)
 
 # pull and start docker container
 - name: pull docker container
