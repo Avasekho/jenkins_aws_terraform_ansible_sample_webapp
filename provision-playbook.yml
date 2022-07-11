@@ -6,15 +6,15 @@
   become_method: sudo
   tasks:
 
-  - name: update apt list
-    apt:
-      update_cache: yes
-
   - name: Ensure python3-pip package is installed
     apt:
+      update_cache: yes
       pkg:
       - python3-pip
       state: present
+    register: apt_res_l
+    retries: 10
+    until: apt_res_l is success
 
   - name: install docker pip
     pip:
