@@ -5,9 +5,12 @@
   become: yes
   tasks:
 
-  - name: Ensure python3-pip package is installed
+  - name: update apt list
     apt:
       update_cache: yes
+
+  - name: Ensure python3-pip package is installed
+    apt:
       pkg:
       - python3-pip
       state: present
@@ -24,9 +27,12 @@
   become: yes
 
   tasks:
-  - name: Ensure default-jdk/maven/git packages are installed
+  - name: update apt list
     apt:
       update_cache: yes
+
+  - name: Ensure default-jdk/maven/git packages are installed
+    apt:
       pkg:
       - default-jdk
       - maven
@@ -83,9 +89,12 @@
   become: yes
 
   tasks:
-  - name: Ensure docker packages are installed
+  - name: update apt list
     apt:
       update_cache: yes
+
+  - name: Ensure docker packages are installed
+    apt:
       pkg:
       - awscli
       - docker.io
