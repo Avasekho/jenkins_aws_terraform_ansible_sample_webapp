@@ -10,20 +10,27 @@ pipeline {
   }
   stages {
     stage ('Terraform init') {
+      steps {
     sh 'terraform init'
+    }
     }
 
     stage ('Terraform plan') {
+      steps {
     sh 'terraform plan'
+    }
     }
 
     stage ('Terraform appy') {
+      steps {
     sh 'terraform apply'
+    }
     }
 
     stage ('Ansible provision') {
+      steps {
     ansiblePlaybook installation: 'Ansible', playbook: 'provision-playbook.yml'
     }    
     }
-
+  }
 }
