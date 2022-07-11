@@ -1,19 +1,27 @@
 pipeline {
-  agent {
+  agent aws-jenkins-agent
 
-
-
+  tools {
+    terraform 'terraform'
   }
-  environment {
-    DOCKERHUB_CREDS = credentials('')
-  }
+  stages {
+    stage ('Terraform init') {
+    sh 'terraform init'
+    }
 
+    stage ('Terraform plan') {
+    sh 'terraform plan'
+    }
 
-      stages {
-      stage ('Ensure Docker is running') {
-        steps {
-          sh 'service docker start'
-          sh 'service docker status'
-        }
-        }
-      }
+    stage ('Terraform appy') {
+    withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
+    sh 'terraform apply'
+    } 
+    }
+
+    stage ('Ansible provision') {
+    ansiblePlaybook installation: 'Ansible', playbook: 'provision-playbook.yml'
+    }    
+    }
+
+}
