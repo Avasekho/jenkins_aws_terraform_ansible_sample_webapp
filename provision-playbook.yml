@@ -30,6 +30,7 @@
   tasks:
   - name: Ensure default-jdk/maven/git packages are installed
     apt:
+      update_cache: yes
       pkg:
       - default-jdk
       - maven
@@ -38,7 +39,6 @@
       - docker.io
       - docker-compose
       state: present
-    update_cache: yes
     register: apt_res_b
     retries: 10
     until: apt_res_b is success
@@ -92,12 +92,12 @@
   tasks:
   - name: Ensure docker packages are installed
     apt:
+      update_cache: yes
       pkg:
       - awscli
       - docker.io
       - docker-compose
       state: present
-    update_cache: yes
     register: apt_res_p
     retries: 10
     until: apt_res_p is success
