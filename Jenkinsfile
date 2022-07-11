@@ -24,16 +24,9 @@ pipeline {
     }
     }
 
-    stage ('Delay for Instances to finish') {
-      steps {
-                echo "Sleep 1 minutes"
-                sleep(time: 30, unit: "SECONDS")
-            }
-    }
-
     stage ('Ansible provisioning') {
       steps {
-    ansiblePlaybook become: true, becomeUser: 'ubuntu', credentialsId: 'ansible-ssh', installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml'
+      sh 'ansible-playbook provision-playbook.yml'
     }    
     }
   }
