@@ -1,5 +1,5 @@
 pipeline {
-  agent { Node("aws-jenkins-agent") }
+  agent { label 'jenkins-agent' }
   tools {
     terraform 'Terraform'
     ansible 'Ansible'
