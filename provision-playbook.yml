@@ -95,7 +95,6 @@
 # pull and start docker container
 - name: pull docker container
   hosts: prod
-  become: yes
 
   tasks:
   - name: Retrieve AWS authentication token
