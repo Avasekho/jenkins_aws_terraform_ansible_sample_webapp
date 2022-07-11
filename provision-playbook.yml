@@ -3,6 +3,8 @@
 - name: Ensure Docker Module for Python is present on Ansible host
   hosts: localhost
   become: yes
+  become_user: root
+  become_method: sudo
   tasks:
 
   - name: Ensure python3-pip package is installed
@@ -11,9 +13,6 @@
       pkg:
       - python3-pip
       state: present
-    register: apt_res_l
-    retries: 5
-    until: apt_res_l is success or ('Failed to lock apt for exclusive operation' not in apt_res_l.msg and '/var/lib/dpkg/lock' not in apt_res_l.msg)
 
   - name: install docker pip
     pip:
@@ -26,6 +25,7 @@
   hosts: build
   become: yes
   become_user: root
+  become_method: sudo
 
   tasks:
   - name: Ensure default-jdk/maven/git packages are installed
@@ -39,9 +39,6 @@
       - docker.io
       - docker-compose
       state: present
-    register: apt_res_b
-    retries: 5
-    until: apt_res_b is success or ('Failed to lock apt for exclusive operation' not in apt_res_b.msg and '/var/lib/dpkg/lock' not in apt_res_b.msg)
 
 # building war
 - name: build war
@@ -89,6 +86,7 @@
   hosts: prod
   become: yes
   become_user: root
+  become_method: sudo
 
   tasks:
   - name: Ensure docker packages are installed
@@ -99,9 +97,6 @@
       - docker.io
       - docker-compose
       state: present
-    register: apt_res_p
-    retries: 5
-    until: apt_res_p is success or ('Failed to lock apt for exclusive operation' not in apt_res_p.msg and '/var/lib/dpkg/lock' not in apt_res_p.msg)
 
 # pull and start docker container
 - name: pull docker container
