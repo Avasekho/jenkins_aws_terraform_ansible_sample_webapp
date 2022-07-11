@@ -6,6 +6,8 @@
   tasks:
   - name: Wait 300 seconds
     wait_for_connection:
+      delay: 5
+      sleep: 5
       timeout: 300
 
   - ping:
@@ -16,6 +18,8 @@
   tasks:
   - name: Wait 300 seconds
     wait_for_connection:
+      delay: 5
+      sleep: 5
       timeout: 300
 
   - ping:
