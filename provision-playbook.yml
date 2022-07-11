@@ -3,8 +3,6 @@
 - name: Ensure Docker Module for Python is present on Ansible host
   hosts: localhost
   become: yes
-  become_user: root
-  become_method: sudo
   tasks:
 
   - name: Ensure python3-pip package is installed
@@ -24,8 +22,6 @@
 - name: install maven
   hosts: build
   become: yes
-  become_user: root
-  become_method: sudo
 
   tasks:
   - name: Ensure default-jdk/maven/git packages are installed
@@ -43,6 +39,7 @@
 # building war
 - name: build war
   hosts: build
+  become: yes
 
   tasks:
   - name: clone files from Git repository
@@ -85,8 +82,6 @@
 - name: install docker
   hosts: prod
   become: yes
-  become_user: root
-  become_method: sudo
 
   tasks:
   - name: Ensure docker packages are installed
@@ -101,6 +96,7 @@
 # pull and start docker container
 - name: pull docker container
   hosts: prod
+  become: yes
 
   tasks:
   - name: Retrieve AWS authentication token
