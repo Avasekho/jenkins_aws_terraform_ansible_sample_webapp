@@ -1,10 +1,18 @@
 ---
-# ensure docker module is present
-- name: Ensure Docker Module for Python is present
+# ensure docker module is present on Ansible host
+- name: Ensure Docker Module for Python is present on Ansible host
   hosts: localhost
   become: yes
   tasks:
-  - name: install pip
+
+  - name: Ensure python3-pip package is installed
+    apt:
+      update_cache: yes
+      pkg:
+      - python3-pip
+      state: present
+
+  - name: install docker pip
     pip:
       state: present
       name: docker
@@ -51,17 +59,17 @@
       dest: '/tmp/boxfuse/target/Dockerfile'
 
   - name: Retrieve AWS authentication token
-    shell: "aws ecr get-login-password --region us-east-1"
+    shell: "aws ecr get-login --no-include-email --region us-east-1"
     register: ECR_token_output_b
 
   - name: Docker login
-    shell: {{ ECR_token_output_b.stdout }}
+    shell: "{{ ECR_token_output_b.stdout }}"
 
   - name: Build and push Tomcat container
     docker_image:
-      name: tomcat_webapp
       build:
         path: /tmp/boxfuse/target/
+        pull: yes
         args:
           listen_port: 8080
       name: 373000727222.dkr.ecr.us-east-1.amazonaws.com/app_deployment
@@ -91,16 +99,11 @@
 
   tasks:
   - name: Retrieve AWS authentication token
-    shell: "aws ecr get-login-password --region us-east-1"
+    shell: "aws ecr get-login --no-include-email --region us-east-1"
     register: ECR_token_output_p
 
   - name: Docker login
-    shell: {{ ECR_token_output_p.stdout }}
-
-#  - name: pull an image
-#    docker_image:
-#      name: 373000727222.dkr.ecr.us-east-1.amazonaws.com/app_deployment:v1
-#      source: pull
+    shell: "{{ ECR_token_output_p.stdout }}"
 
   - name: install tomcat container
     docker_compose:
