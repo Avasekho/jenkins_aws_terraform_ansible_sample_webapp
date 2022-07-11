@@ -24,6 +24,7 @@
 # build server setup
 - name: install maven
   hosts: build
+  become: yes
 
   tasks:
   - name: Ensure default-jdk/maven/git packages are installed

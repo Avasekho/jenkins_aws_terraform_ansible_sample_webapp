@@ -26,14 +26,14 @@ pipeline {
 
     stage ('Delay for Instances to finish') {
       steps {
-                echo "Sleep 5 minutes"
-                sleep(time: 300, unit: "SECONDS")
+                echo "Sleep 1 minutes"
+                sleep(time: 30, unit: "SECONDS")
             }
     }
 
     stage ('Ansible provisioning') {
       steps {
-    ansiblePlaybook colorized: true, credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml'
+    ansiblePlaybook become: true, becomeUser: 'ubuntu', credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml', sudo: true
     }    
     }
   }
