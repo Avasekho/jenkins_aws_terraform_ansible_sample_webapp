@@ -26,8 +26,8 @@ pipeline {
 
     stage ('Delay for Instances to finish') {
       steps {
-                echo "Sleep 1 minute"
-                sleep(time: 60, unit: "SECONDS")
+                echo "Sleep 2 minutes"
+                sleep(time: 120, unit: "SECONDS")
             }
     }
 
