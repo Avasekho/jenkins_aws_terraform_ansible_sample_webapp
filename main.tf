@@ -28,6 +28,19 @@ resource "aws_instance" "build_server" {
     Name = "Build Server"
   }
 
+# wait fot ssh available on remote host
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file("/home/ubuntu/keys/us-east-1-key.pem")
+    host     = self.public_ip
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Build Server - SSH is UP!'",
+    ]
+  }
+
 }
 
 resource "aws_instance" "prod_server" {
@@ -39,6 +52,19 @@ resource "aws_instance" "prod_server" {
 
   tags = {
     Name = "Prod Server"
+  }
+
+# wait fot ssh available on remote host
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file("/home/ubuntu/keys/us-east-1-key.pem")
+    host     = self.public_ip
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Build Server - SSH is UP!'",
+    ]
   }
 
 }

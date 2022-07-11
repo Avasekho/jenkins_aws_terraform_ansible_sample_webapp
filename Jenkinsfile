@@ -29,12 +29,6 @@ pipeline {
     }
     }
 
-    stage ('Wait for connection') {
-      steps {
-      ansiblePlaybook become: true, credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'ssh_check.yml'
-    }    
-    }
-
     stage ('Ansible provisioning') {
       steps {
       ansiblePlaybook become: true, credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml'
