@@ -1,8 +1,8 @@
 pipeline {
   agent { Node("aws-jenkins-agent") }
   tools {
-    terraform 'terraform'
-    ansible 'ansible'
+    terraform 'Terraform'
+    ansible 'Ansible'
   }
   environment {
     AWS_ACCESS_KEY_ID = credentials('34d2a98c-ee5a-4a65-939e-44a8a9c18d97')
@@ -27,7 +27,7 @@ pipeline {
     }
     }
 
-    stage ('Ansible provision') {
+    stage ('Ansible provisioning') {
       steps {
     ansiblePlaybook installation: 'Ansible', playbook: 'provision-playbook.yml'
     }    
