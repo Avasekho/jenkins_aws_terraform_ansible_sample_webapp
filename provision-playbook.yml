@@ -25,7 +25,7 @@
 - name: install maven
   hosts: build
   become: yes
-  
+  become_user: root
 
   tasks:
   - name: Ensure default-jdk/maven/git packages are installed
@@ -88,6 +88,7 @@
 - name: install docker
   hosts: prod
   become: yes
+  become_user: root
 
   tasks:
   - name: Ensure docker packages are installed
