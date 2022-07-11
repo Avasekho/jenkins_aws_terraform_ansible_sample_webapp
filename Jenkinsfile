@@ -33,7 +33,7 @@ pipeline {
 
     stage ('Ansible provisioning') {
       steps {
-    ansiblePlaybook become: true, becomeUser: 'ubuntu', credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml', sudo: true
+    ansiblePlaybook become: true, becomeUser: 'ubuntu', credentialsId: 'ansible-ssh', installation: 'Ansible', inventory: 'inventory', playbook: 'provision-playbook.yml'
     }    
     }
   }
