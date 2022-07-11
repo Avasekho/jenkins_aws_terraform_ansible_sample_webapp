@@ -1,0 +1,21 @@
+---
+# ssh connection check (replacement of provisioner check)
+- name: ensure build is accesible
+  hosts: build
+
+  tasks:
+  - name: Wait 300 seconds
+    wait_for_connection:
+      timeout: 300
+
+  - ping:
+    
+- name: ensure prod is accesible
+  hosts: prod
+  
+  tasks:
+  - name: Wait 300 seconds
+    wait_for_connection:
+      timeout: 300
+
+  - ping:

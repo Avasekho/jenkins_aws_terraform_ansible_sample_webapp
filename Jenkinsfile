@@ -1,3 +1,8 @@
+/*
+Jenkins agent is running on an AWS host;
+AWS credentials and ssh-key added to Jenkins credentials;
+New instances added to IAM role with access permissions to ECR;
+*/
 pipeline {
   agent {
     label 'jenkins-agent'
@@ -22,6 +27,12 @@ pipeline {
         sh 'terraform apply -auto-approve'
     } 
     }
+    }
+
+    stage ('Instances connection check (provisioner replacement)') {
+      steps {
+      ansiblePlaybook become: true, credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'ssh-check.yml'
+    }    
     }
 
     stage ('Ansible provisioning') {

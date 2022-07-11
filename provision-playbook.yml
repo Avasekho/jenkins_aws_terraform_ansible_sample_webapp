@@ -11,6 +11,10 @@
       pkg:
       - python3-pip
       state: present
+    register: local_apt_status
+    until: local_apt_status is success
+    delay: 6
+    retries: 10
 
   - name: install docker pip
     pip:
@@ -35,6 +39,10 @@
       - docker.io
       - docker-compose
       state: present
+    register: build_apt_status
+    until: build_apt_status is success
+    delay: 6
+    retries: 10
 
 # building war
 - name: build war
@@ -92,6 +100,10 @@
       - docker.io
       - docker-compose
       state: present
+    register: prod_apt_status
+    until: prod_apt_status is success
+    delay: 6
+    retries: 10
 
 # pull and start docker container
 - name: pull docker container
