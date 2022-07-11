@@ -29,7 +29,7 @@ pipeline {
     }
     }
 
-    stage ('Instances connection check (provisioner replacement)') {
+    stage ('Wait for connection') {
       steps {
       ansiblePlaybook become: true, credentialsId: 'ansible-ssh', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'ssh_check.yml'
     }    
