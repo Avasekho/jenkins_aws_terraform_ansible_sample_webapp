@@ -21,7 +21,14 @@ pipeline {
 
     stage ('Terraform appy') {
       steps {
-      sh 'terraform apply -auto-approve'
+      withCredentials([[
+        $class: 'AmazonWebServicesCredentialsBinding',
+        credentialsId: '34d2a98c-ee5a-4a65-939e-44a8a9c18d97',
+        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+]]) {
+        sh 'terraform apply -auto-approve'
+}    
     }
     }
 
