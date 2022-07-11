@@ -1,8 +1,8 @@
 pipeline {
-  agent aws-jenkins-agent
-
+  agent { Node("aws-jenkins-agent") }
   tools {
     terraform 'terraform'
+    ansible 'ansible'
   }
   environment {
     AWS_ACCESS_KEY_ID = credentials('34d2a98c-ee5a-4a65-939e-44a8a9c18d97')
