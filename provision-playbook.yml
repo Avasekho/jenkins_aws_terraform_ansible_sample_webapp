@@ -3,6 +3,7 @@
 - name: Ensure Docker Module for Python is present on Ansible host
   hosts: localhost
   become: yes
+  become_method: sudo
   tasks:
 
   - name: update apt list
@@ -25,6 +26,7 @@
 - name: install maven
   hosts: build
   become: yes
+  become_method: sudo
 
   tasks:
   - name: update apt list
@@ -87,6 +89,7 @@
 - name: install docker
   hosts: prod
   become: yes
+  become_method: sudo
 
   tasks:
   - name: update apt list
