@@ -52,12 +52,12 @@
   tasks:
   - name: clone files from Git repository
     git:
-      repo: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
-      dest: /tmp/boxfuse
+      repo: 'https://github.com/Avasekho/app42_postgres_clone.git'
+      dest: /tmp/app42
 
   - name: package war
     shell:
-      chdir: /tmp/boxfuse
+      chdir: /tmp/app42
       cmd: mvn package
 
 # tasks build and push docker
@@ -65,7 +65,7 @@
     synchronize:
       mode: push
       src: './Dockerfile'
-      dest: '/tmp/boxfuse/target/Dockerfile'
+      dest: '/tmp/app42/target/Dockerfile'
 
   - name: Retrieve AWS authentication token
     shell: "aws ecr get-login --no-include-email --region us-east-1"
@@ -77,7 +77,7 @@
   - name: Build and push Tomcat container
     docker_image:
       build:
-        path: /tmp/boxfuse/target/
+        path: /tmp/app42/target/
         pull: yes
         args:
           listen_port: 8080
@@ -120,7 +120,7 @@
 
   - name: install tomcat container
     docker_compose:
-      project_name: webapp
+      project_name: webapp42
       definition:
         version: '2'
         services:
@@ -128,3 +128,12 @@
             image: 373000727222.dkr.ecr.us-east-1.amazonaws.com/app_deployment:v1
             ports: 
               - "8080:8080"
+          db:
+            image: postgres:12
+            restart: always
+            environment:
+	            POSTGRES_USER: dbadmin
+              POSTGRES_PASSWORD: dbpassword
+	            POSTGRES_DB: webappdb
+            ports: 
+              - "5432:5432"
