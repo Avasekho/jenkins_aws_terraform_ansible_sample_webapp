@@ -131,9 +131,7 @@
           db:
             image: postgres:12
             restart: always
-            ports: 
-              - "5432:5432"
             environment:
-              POSTGRES_USER: dbadmin
+              POSTGRES_USER: webappuser
               POSTGRES_PASSWORD: dbpassword
               POSTGRES_DB: webappdb

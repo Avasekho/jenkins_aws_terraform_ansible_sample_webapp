@@ -2,6 +2,8 @@
 Jenkins agent is running on an AWS host;
 AWS credentials and ssh-key added to Jenkins credentials;
 New instances added to IAM role with access permissions to ECR;
+AWS private key file is used in terraform step to wait for ssh up 
+webapp - https://github.com/shephertz/App42PaaS-Java-PostgreSQL-Sample.git
 */
 pipeline {
   agent {
