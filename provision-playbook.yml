@@ -60,6 +60,10 @@
       chdir: /tmp/app42
       cmd: mvn package
 
+  - name: copy properties
+    shell: 
+      cmd: cp /tmp/app42/WebContent/Config.properties /tmp/app42/target/Config.properties
+
 # tasks build and push docker
   - name: sync dockerfile
     synchronize:
