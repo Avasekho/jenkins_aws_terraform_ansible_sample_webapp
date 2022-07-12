@@ -2,8 +2,9 @@
 Jenkins agent is running on an AWS host;
 AWS credentials and ssh-key added to Jenkins credentials;
 New instances added to IAM role with access permissions to ECR;
-AWS private key file is used in terraform step to wait for ssh up 
+AWS private key file is used in terraform step to wait for ssh up before Ansible step
 webapp - https://github.com/deepakrangegowda/Webapp.git
+WebPage - localhost:8080/GetStartedTomcat/
 */
 pipeline {
   agent {
