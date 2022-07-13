@@ -120,7 +120,7 @@
 
   - name: install tomcat container
     docker_compose:
-      project_name: webapp42
+      project_name: tomcat
       definition:
         version: '2'
         services:
